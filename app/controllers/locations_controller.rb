@@ -13,14 +13,11 @@ class LocationsController < ApplicationController
   # GET /locations/1
   # GET /locations/1.json
   def show
-    @zip = 38190
-    @current= JSON.parse((@@open_weather_api.current zipcode: @zip,   country_code: 'es').to_json)
-   
+    @zip = @location.zipcode
+    @current= JSON.parse((@@open_weather_api.current zipcode: @zip,   country_code: 'us').to_json)
+    @daily= JSON.parse((@@open_weather_api.forecast :daily, city: @current['name'],   country_code: 'us', days: 2).to_json)
     @liveTemp=(((@current['main']["temp"])-273) *9.0/5.0+32).round(2)
-    @high=(
 
-
-            )
   end
 
   # GET /locations/new

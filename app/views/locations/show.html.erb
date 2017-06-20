@@ -2,7 +2,8 @@
 
 <p>
   <strong>Zipcode:</strong>
-  <%= @liveTemp %>
+  <%= JSON.pretty_generate(@daily)%>
+ 
 </p>
 
 <%= link_to 'Edit', edit_location_path(@location) %> |
