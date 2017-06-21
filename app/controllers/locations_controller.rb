@@ -4,6 +4,7 @@ require 'json'
 class LocationsController < ApplicationController
   before_action :set_location, only: [:show, :edit, :update, :destroy]
   @@open_weather_api = OpenWeatherAPI::API.new api_key: "f47eb12edb20f01ceb91fcb8d27a3473", default_language: 'es', default_units: 'metric', default_country_code: 'es'
+  
   # GET /locations
   # GET /locations.json
   def index
@@ -12,12 +13,22 @@ class LocationsController < ApplicationController
 
   # GET /locations/1
   # GET /locations/1.json
-  def show
+  def show 
+
+    @rightNow =Time.new
     @zip = @location.zipcode
     @current= JSON.parse((@@open_weather_api.current zipcode: @zip,   country_code: 'us').to_json)
     @daily= JSON.parse((@@open_weather_api.forecast :daily, city: @current['name'],   country_code: 'us', days: 2).to_json)
-    @liveTemp=(((@current['main']["temp"])-273) *9.0/5.0+32).round(2)
-
+    
+    @liveTemp=toFahr(@current['main']["temp"])
+    @forecastTemps=[]
+    @maxTemp = -500
+    @minTemp = 500
+    @daily['list'].each do |child| 
+      @forecastTemps << [child['dt_txt'],toFahr(child['main']['temp'])]
+      @maxTemp = toFahr(child['main']['temp'])>@maxTemp? toFahr(child['main']['temp']) : @maxTemp
+      @minTemp =   [toFahr(child['main']['temp']),@minTemp].min       
+    end
   end
 
   # GET /locations/new
@@ -74,7 +85,9 @@ class LocationsController < ApplicationController
     def set_location
       @location = Location.find(params[:id])
     end
-
+    def toFahr kelv 
+      ((kelv-273)*9/5.0+32).round(2)
+    end
     # Never trust parameters from the scary internet, only allow the white list through.
     def location_params
       params.require(:location).permit(:zipcode)
