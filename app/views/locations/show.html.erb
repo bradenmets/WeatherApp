@@ -2,8 +2,8 @@
 
 <p>
 
-  <% cache @location.zipcode do %>
-  <strong>Zipcode:<%=@location.zipcode%></strong>
+  <% cache @zipcode do %>
+  <strong>Zipcode:<%=@zipcode%></strong>
   <h1>Current Time:<%= @rightNow %><h1>
   <h1>Current Temp:<%=@liveTemp %><h1>
   <h1>Highest and lowest Temps for the next 5 days</h1>
@@ -11,7 +11,7 @@
   <h1>Low Temp:<%=@minTemp %><h1>
 
   <ul>
-  <%@forecastTemps.each do |temp| %>
+  <%= @forecastTemps.each do |temp| %>
   		<li class="Forecast Block"> 
   			<p class="Date"><%= Date.parse temp[0] %> </p>
   			<p class="Time"><%= Time.parse temp[0] %> </p>    
@@ -21,6 +21,3 @@
   </ul>
 </p>
  <% end %>
-
-<%= link_to 'Edit', edit_location_path(@location) %> |
-<%= link_to 'Back', locations_path %>
