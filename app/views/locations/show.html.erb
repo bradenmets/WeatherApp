@@ -2,22 +2,26 @@
 
 <p>
 
-  <% cache @zipcode do %>
+<% cache @zipcode do %>
+  <div class="col-xs-9" >
   <strong>Zipcode:<%=@zipcode%></strong>
-  <h1>Current Time:<%= @rightNow %><h1>
-  <h1>Current Temp:<%=@liveTemp %><h1>
-  <h1>Highest and lowest Temps for the next 5 days</h1>
-  <h1>High Temp:<%=@maxTemp %><h1>
-  <h1>Low Temp:<%=@minTemp %><h1>
-
-  <ul>
-  <%= @forecastTemps.each do |temp| %>
-  		<li class="Forecast Block"> 
-  			<p class="Date"><%= Date.parse temp[0] %> </p>
-  			<p class="Time"><%= Time.parse temp[0] %> </p>    
-  			<p class="Temp"><%= temp[1] %> </p>	
-  		</li>
+  <h1>Current Temp:<%=@liveTemp %> Degrees Fahrenheit</h1>
+  <h1>Highest and lowest Temps of the next 5 days</h1>
+  <h1>High Temp:<%=@maxTemp %></h1>
+  <h1>Low Temp:<%=@minTemp %></h1>
+  <h1>This site uses cached files to decrease response times. Please note that this zipcode was last updated at <%= @rightNow %> . We do not serve content that is over 30 minutes old! Thank you for using Braden's Weather App. Have a nice Day!</h1>
+  </div>
+  <div class="col-xs-3">
+  <ul class="list-group">
+  <strong> Temperature for the next 5 days by 3 hour blocks </strong>
+  <% @forecastTemps.each do |temp| %>
+      <li class="list-group-item"> 
+        <p class="Date"><%= Date.parse temp[0] %> </p>
+        <p class="Time"><%= Time.parse temp[0] %> </p>    
+        <p class="Temp"><%= temp[1] %> </p> 
+      </li>
   <%end%>
   </ul>
+  </div>
 </p>
- <% end %>
+<% end %>
